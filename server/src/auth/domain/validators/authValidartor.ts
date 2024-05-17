@@ -1,18 +1,18 @@
 import { validate } from "class-validator";
-import { AuthCredential } from "../entities/authCredential";
+import { AuthCredentialRegister } from "../entities/authCredentialRegister";
 
 export class AuthValidator {
 
-    public credentials: AuthCredential;
+    public credentials: AuthCredentialRegister;
     public listErrors:any[]
 
-    constructor(credentials:AuthCredential){
+    constructor(credentials:AuthCredentialRegister){
         this.credentials = credentials;
         this.listErrors = [];
     }
 
 
-    public async invalidHasErros() {
+    public async invalidHasErrors() {
         await this.validate();
 
 
