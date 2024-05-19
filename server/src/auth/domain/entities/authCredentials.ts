@@ -6,28 +6,23 @@ export class AuthCredentialRegister {
     public CURP: string;
 
     @IsNotEmpty()
-    @Length(8,13)
+    @Length(8,16)
     public password:string;
 
     @IsNotEmpty()
-    @Length( 12)
     public name: string;
 
     @IsNotEmpty()
-    @Length(12)
     public lastname: string;
 
     @IsNotEmpty()
-    @Length(7,13)
     @IsEmail()
     public email: string;
 
     @IsNotEmpty()
-    @Length(13)
     public state: string;
 
     @IsNotEmpty()
-    @Length(13)
     public city: string;
 
     @IsNotEmpty()
@@ -43,6 +38,20 @@ export class AuthCredentialRegister {
         this.state = state,
         this.city = city,
         this.zip_code = zip_code
+    }    
+}
+
+export class AuthCredentialLogin{
+    @IsNotEmpty()
+    @Length(18)
+    CURP:string
+
+    @IsNotEmpty()
+    @Length(8,16)
+    password:string
+
+    constructor(CURP:string, password:string){
+        this.CURP = CURP,
+        this.password = password
     }
-    
 }

@@ -1,11 +1,23 @@
-import express from 'express'
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { authRouter } from '../src/auth/infraestructure/routes/authRoutes';
+
+dotenv.config();
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
+app.use(cors());
 
-const PORT: number = 8080;
+const PORT = process.env.PORT; 
+app.use('/api/v1/auth', authRouter);
+
+app.listen(PORT, () => {
+    console.log('Servidor corriendo en el puerto: http://localhost:' + PORT);
+    console.log(process.env.PORT)
+    console.log(process.env.SECRET_JWT)
+});
 
 
-app.listen(PORT, () =>{
-    console.log('Servidor corriendo en el puerto: http://localhost:8080')
-})
+
+//https://github.com/Aregomz/clienteServidorProyecto.git clonar para ver como esta 

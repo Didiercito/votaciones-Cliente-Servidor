@@ -1,15 +1,15 @@
-import "./Registro.css" 
+import './Registro.css'
 import { useState } from "react";
 
 export function Registro() {
     const [Curp, setCurp] = useState("")
-    const [Contraseña, setContraseña] = useState("")
+    const [Password, setPassword] = useState("")
     const [error, setError] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (Curp === "" || Contraseña === "") {
+        if (Curp === "" || Password === "") {
             setError(true)
             return
         }
@@ -32,8 +32,8 @@ export function Registro() {
                     type="password"
                     placeholder="Contraseña:"
                     size="40"
-                    value={Contraseña}
-                    onChange={e => setContraseña(e.target.value)}
+                    value={Password}
+                    onChange={e => setPassword(e.target.value)}
                 />
                 <button type="submit">Iniciar sesion</button>
             </form>

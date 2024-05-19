@@ -1,22 +1,12 @@
 import Registro from './components/Registro'
-import './App.css'
 
 
 function App() {
 
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_pblank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-    </>
-  )
+  return (<>
+  <Registro></Registro>
+  </>)
 }
 
 export default App

@@ -1,6 +1,7 @@
-import { AuthCredentialRegister } from "../entities/authCredentialRegister";
+import { AuthCredentialLogin } from "../entities/authCredentials";
+import { AuthCredentialRegister } from "../entities/authCredentials";
 
 export interface AuthRepository {
-    verifyUser(credentials: AuthCredentialRegister): Promise<AuthCredentialRegister | null>;
+    verifyUser(credentials: AuthCredentialLogin): Promise<AuthCredentialLogin | null>;
     registerUser(credentials: AuthCredentialRegister): Promise<AuthCredentialRegister | null>;
 }
