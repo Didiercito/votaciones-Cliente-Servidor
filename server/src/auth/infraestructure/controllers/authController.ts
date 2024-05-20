@@ -34,7 +34,9 @@ export class AuthController {
             res.status(200).json({
                 message: "Login successful",
                 success: true,
-                user,
+                user:{
+                CURP
+                },
                 token
             });
         } catch (error:any) {

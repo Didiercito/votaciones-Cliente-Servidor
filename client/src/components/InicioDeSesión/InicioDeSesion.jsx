@@ -1,7 +1,7 @@
-import './Registro.css'
+import './InicioDeSesion.css'
 import { useState } from "react";
 
-export function Registro() {
+export function Inicio() {
     const [Curp, setCurp] = useState("")
     const [Password, setPassword] = useState("")
     const [error, setError] = useState(false)
@@ -20,7 +20,7 @@ export function Registro() {
         <section>
             <h1>Registro</h1>
 
-            <form className="registro" onSubmit={handleSubmit}>
+            <form className="inicioDeSesion" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Curp:"
@@ -42,4 +42,3 @@ export function Registro() {
     );
 }
 
-export default Registro;
