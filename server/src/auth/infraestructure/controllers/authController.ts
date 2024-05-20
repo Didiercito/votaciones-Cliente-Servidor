@@ -35,7 +35,8 @@ export class AuthController {
                 message: "Login successful",
                 success: true,
                 user:{
-                CURP
+                CURP,
+                password
                 },
                 token
             });

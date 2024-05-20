@@ -5,3 +5,30 @@
     align-items: center;
     gap: 1rem;
 }
+
+.Titulo{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center ;
+}
+
+.Extraer{
+    padding: 7px;
+    font-size: medium;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(209, 209, 209);
+}
+
+.Botones{
+    border: none;
+    padding: 9px 10px ;
+    border-radius: 5%;
+    background-color: rgb(209, 209, 209);
+}
+
+.Divicion{
+    display: flex;
+    column-gap: 30px;
+}
