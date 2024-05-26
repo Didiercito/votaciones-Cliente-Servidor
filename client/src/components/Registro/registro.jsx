@@ -17,7 +17,6 @@ export function Registro() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación de datos
         if (!Curp || !Password || !Nombre || !Apellido || !Correo || !Estado || !Ciudad || !CodigoPostal) {
             setError(true);
             return;
@@ -45,7 +44,7 @@ export function Registro() {
             const data = await response.json();
             if (response.ok) {
                 console.log('Usuario registrado exitosamente', data.user);
-                // Redirigir a la página de inicio de sesión o a donde sea apropiado
+               
                 navigate('/');
             } else {
                 console.error('Error al registrar usuario:', data.message);

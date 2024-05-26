@@ -1,0 +1,123 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Cambiamos a 100vh para que ocupe toda la altura de la ventana */
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  width: 80%; /* Ajustamos el ancho para que se vea bien en la pantalla */
+  height: 80vh; /* Aseguramos que ocupe una buena parte de la ventana */
+}
+
+.chart-container, .boleta-container {
+  flex: 1;
+  padding: 20px;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boleta {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 800px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+  text-align: center;
+  margin: 5px 0;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.elemento-encabezado {
+  display: flex;
+  flex-direction: column;
+}
+
+.elemento-encabezado span {
+  margin: 2px 0;
+}
+
+.partidos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.partido {
+  width: 48%;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.logo-partido {
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 12px;
+}
+
+.nombre-partido {
+  font-weight: bold;
+}
+
+.nombre-candidato {
+  margin-left: auto;
+}
+
+.checkbox {
+  margin-left: 10px;
+}
+
+.pan {
+  background-image: url('/assets/pan.png'); 
+}
+
+.pri {
+  background-image: url('/assets/pri.jpeg'); 
+}
+
+.prd {
+  background-image: url('/assets/prd.png'); 
+}
+
+.pt {
+  background-image: url('/assets/pt.png'); 
+}
+
+.verde {
+  background-image: url('/assets/verdee.jpeg'); 
+}
+
+.udc {
+  background-image: url('/assets/movimiento.webp'); 
+}
+
+.morena {
+  background-image: url('/assets/morena.webp'); 
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+}

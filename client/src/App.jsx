@@ -1,17 +1,19 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Registro from './components/Registro/Registro';
-import InicioDeSesion from './components/InicioDeSesión/InicioDeSesion';
+import React from 'react';
+import Votaciones from './components/HojaVotar/Votaciones';
+import Grafica from './components/Grafica/Grafica';
+import './components/HojaVotar/Votaciones.css';
 
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<InicioDeSesion />} />
-                <Route path="/registro" element={<Registro />} />
-            </Routes>
-        </Router>
-    );
+  return (
+    <div className="container">
+      <div className="chart-container">
+        <Grafica />
+      </div>
+      <div className="boleta-container">
+        <Votaciones />
+      </div>
+    </div>
+  );
 }
 
 export default App;
