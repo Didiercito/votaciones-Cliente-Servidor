@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Length } from "class-validator";
+import { IsEmail, IsNotEmpty, Length, Max, Min } from "class-validator";
 
 export class AuthCredentialRegister {
     @IsNotEmpty()
@@ -25,8 +25,7 @@ export class AuthCredentialRegister {
     @IsNotEmpty()
     public city: string;
 
-    @IsNotEmpty()
-    @Length(5)
+    @IsNotEmpty()   
     public zip_code: number;
 
     constructor(CURP:string, password:string, name:string, lastname:string, email:string, state:string, city:string, zip_code:number){
