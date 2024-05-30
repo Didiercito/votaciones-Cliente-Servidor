@@ -5,8 +5,8 @@ import { validate } from 'class-validator';
 export class CreateCandidateUseCase {
     constructor(readonly candidateRepository: CandidateRepository) { }
 
-    async execute(image_url: string, name_candidate: string) {
-        const credentials = new CandidateCredentials(image_url, name_candidate);
+    async execute(image_url: string, name_candidate: string, name_political_party: string, id_political_party: string, candidate_id: string) {
+        const credentials = new CandidateCredentials(image_url, name_candidate, name_political_party, id_political_party, candidate_id);
 
         await this.validateCredentials(credentials);
 
@@ -46,7 +46,6 @@ export class CreateCandidateUseCase {
         };
     }
 }
-
 
 export class UpdateCandidateUseCase {
     constructor(readonly candidateRepository: CandidateRepository) { }

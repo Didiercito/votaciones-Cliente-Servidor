@@ -17,7 +17,18 @@ export function Registro() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!Curp || !Password || !Nombre || !Apellido || !Correo || !Estado || !Ciudad || !CodigoPostal) {
+        const curpPattern = /^[A-Z0-9]{18}$/;
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
+        const codigoPostalPattern = /^\d{5}$/;
+
+        if (!Curp.match(curpPattern) || 
+            !Password.match(passwordPattern) || 
+            !CodigoPostal.match(codigoPostalPattern) || 
+            !Nombre || 
+            !Apellido || 
+            !Correo || 
+            !Estado || 
+            !Ciudad) {
             setError(true);
             return;
         }
@@ -44,7 +55,6 @@ export function Registro() {
             const data = await response.json();
             if (response.ok) {
                 console.log('Usuario registrado exitosamente', data.user);
-               
                 navigate('/');
             } else {
                 console.error('Error al registrar usuario:', data.message);
@@ -65,53 +75,67 @@ export function Registro() {
                             placeholder='CURP'
                             value={Curp}
                             onChange={(e) => setCurp(e.target.value)}
+                            pattern='^[A-Z0-9]{18}$'
+                            title='El CURP debe tener 18 caracteres en mayúsculas.'
+                            required
                         />
                         <input
                             type='password'
                             placeholder='Contraseña'
                             value={Password}
                             onChange={(e) => setPassword(e.target.value)}
+                            pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$'
+                            title='La contraseña debe tener entre 8 y 16 caracteres, incluir al menos una mayúscula, una minúscula y un número.'
+                            required
                         />
                         <input
                             type='text'
                             placeholder='Nombre'
                             value={Nombre}
                             onChange={(e) => setNombre(e.target.value)}
+                            required
                         />
                         <input
                             type='text'
                             placeholder='Apellido'
                             value={Apellido}
                             onChange={(e) => setApellido(e.target.value)}
+                            required
                         />
                         <input
                             type='email'
                             placeholder='Correo'
                             value={Correo}
                             onChange={(e) => setCorreo(e.target.value)}
+                            required
                         />
                         <input
                             type='text'
                             placeholder='Estado'
                             value={Estado}
                             onChange={(e) => setEstado(e.target.value)}
+                            required
                         />
                         <input
                             type='text'
                             placeholder='Ciudad'
                             value={Ciudad}
                             onChange={(e) => setCiudad(e.target.value)}
+                            required
                         />
                         <input
                             type='text'
                             placeholder='Código Postal'
                             value={CodigoPostal}
                             onChange={(e) => setCodigoPostal(e.target.value)}
+                            pattern='^\d{5}$'
+                            title='El código postal debe tener 5 dígitos.'
+                            required
                         />
                     </div>
                     <button type='submit'>Registrarse</button>
                 </form>
-                {error && <p className='error-message'>Todos los campos son obligatorios</p>}
+                {error && <p className='error-message'>Todos los campos son obligatorios y deben estar correctamente llenados.</p>}
             </section>
         </>
     );

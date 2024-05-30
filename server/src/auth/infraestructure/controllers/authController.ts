@@ -28,16 +28,13 @@ export class AuthController {
 
     async signin(req: Request, res: Response) {
         try {
-            const { CURP, password } = req.body;
+            const { CURP, password } = req.body; 
             const { user, token } = await this.authCaseLogin.execute(CURP, password);
-
+    
             res.status(200).json({
                 message: "Login successful",
                 success: true,
-                user:{
-                CURP,
-                password
-                },
+                user,
                 token
             });
         } catch (error:any) {
@@ -49,4 +46,6 @@ export class AuthController {
             });
         }
     }
+    
+    
 }

@@ -4,25 +4,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Cambiamos a 100vh para que ocupe toda la altura de la ventana */
+  height: 100vh;
   margin: 0;
 }
 
-.container {
+.votaciones-container {
   display: flex;
-  width: 80%; /* Ajustamos el ancho para que se vea bien en la pantalla */
-  height: 80vh; /* Aseguramos que ocupe una buena parte de la ventana */
+  justify-content: space-between; /* Alinear elementos en el espacio disponible */
+  align-items: center; /* Centrar verticalmente */
 }
 
-.chart-container, .boleta-container {
-  flex: 1;
+.grafica {
+  flex: 1; /* Hace que la gráfica ocupe todo el espacio disponible */
   padding: 20px;
+  text-align: center; /* Centra horizontalmente */
 }
 
-.chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.boleta-container {
+  flex: 1; /* Hace que la hoja de votaciones ocupe todo el espacio disponible */
+  padding: 20px;
+  text-align: center; /* Centra horizontalmente */
 }
 
 .boleta {
@@ -31,11 +32,13 @@ body {
   border: 1px solid #ccc;
   width: 800px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin: 0 auto; /* Centra horizontalmente */
 }
 
 h1, h2 {
   text-align: center;
   margin: 5px 0;
+  letter-spacing: 1px; /* Añade un poco de espacio entre las letras */
 }
 
 .encabezado {
@@ -51,6 +54,7 @@ h1, h2 {
 
 .elemento-encabezado span {
   margin: 2px 0;
+  letter-spacing: 0.5px; /* Añade un poco de espacio entre las letras */
 }
 
 .partidos {
@@ -72,52 +76,65 @@ h1, h2 {
 .logo-partido {
   width: 50px;
   height: 50px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin-right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.logo-partido img {
+  width: 100%;
+  height: auto;
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: contain;
 }
 
 .nombre-partido {
   font-weight: bold;
+  letter-spacing: 0.5px; /* Añade un poco de espacio entre las letras */
 }
 
 .nombre-candidato {
   margin-left: auto;
+  letter-spacing: 0.5px; /* Añade un poco de espacio entre las letras */
 }
 
 .checkbox {
   margin-left: 10px;
 }
 
-.pan {
-  background-image: url('/assets/pan.png'); 
-}
-
-.pri {
-  background-image: url('/assets/pri.jpeg'); 
-}
-
-.prd {
-  background-image: url('/assets/prd.png'); 
-}
-
-.pt {
-  background-image: url('/assets/pt.png'); 
-}
-
-.verde {
-  background-image: url('/assets/verdee.jpeg'); 
-}
-
-.udc {
-  background-image: url('/assets/movimiento.webp'); 
-}
-
-.morena {
-  background-image: url('/assets/morena.webp'); 
-}
-
-.footer {
-  text-align: center;
+.button-container {
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.button {
+  padding: 8px 10px; 
+  font-size: 10px; 
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #45a049;
 }

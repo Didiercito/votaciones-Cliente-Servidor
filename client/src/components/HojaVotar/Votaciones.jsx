@@ -1,66 +1,184 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import ConfirmAlert from '../Alerta/Alerta';
+import BarChart from '../Grafica/Grafica';
 import './Votaciones.css';
 
 function Votaciones() {
+  const [candidates, setCandidates] = useState([]);
+  const [selectedParty, setSelectedParty] = useState(null);
+  const location = useLocation();
+  const userState = location.state?.userState || localStorage.getItem('userState');  
+  const userCity = location.state?.userCity || localStorage.getItem('userCity');    
+  const [ws, setWs] = useState(null);
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [{
+      label: 'Votos',
+      data: [],
+      backgroundColor: [],
+      borderColor: [],
+      borderWidth: 1,
+    }]
+  });
+
+  const obtenerCandidatos = () => {
+    fetch('http://localhost:8080/api/v1/candidate/all')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setCandidates(data.candidates);
+          updateChartData(data.candidates);
+        } else {
+          console.error('Failed to retrieve candidates');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching candidates:', error);
+      });
+  };
+
+  const updateChartData = (candidates) => {
+    const labels = candidates.map(candidate => candidate.name_political_party);
+    const votes = candidates.map(candidate => candidate.votes || 0);
+    const backgroundColor = candidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 0.2)`);
+    const borderColor = candidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 1)`);
+
+    setChartData({
+      labels,
+      datasets: [{
+        label: 'Votos',
+        data: votes,
+        backgroundColor,
+        borderColor,
+        borderWidth: 1,
+      }]
+    });
+  };
+
+  useEffect(() => {
+    obtenerCandidatos(); 
+    const intervalId = setInterval(obtenerCandidatos, 35000); 
+    return () => clearInterval(intervalId); 
+  }, []);
+
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:8080');
+    setWs(socket);
+
+    socket.onopen = () => {
+      console.log('WebSocket connected');
+    };
+
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.event === 'vote') {
+        obtenerCandidatos();
+      }
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket closed');
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    return () => socket.close();
+  }, []);
+
+  const handleCheckboxChange = (party) => {
+    setSelectedParty(party);
+  };
+
+  const handleVote = (event) => {
+    event.preventDefault();
+    if (selectedParty) {
+      ConfirmAlert({
+        title: 'Confirmar su voto',
+        message: `Estas seguro que quieres votar por este partido politico ${selectedParty}?`,
+        onConfirm: () => {
+          thankYouAlert();
+        },
+        onCancel: () => {
+        }
+      });
+    }
+  };
+
+  const thankYouAlert = () => {
+    alert('Thank you for your vote!');
+
+    const voteData = {
+      userId: 'user123',
+      candidateId: selectedParty
+    };
+
+    fetch('http://localhost:8080/api/v1/vote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(voteData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        console.log('Voto registrado exitosamente');
+      } else {
+        console.error('Error al registrar el voto');
+      }
+    })
+    .catch(error => {
+      console.error('Error al enviar el voto:', error);
+    });
+  };
+
   return (
-    <div className="boleta">
-      <h1>PROCESO ELECTORAL LOCAL 2023</h1>
-      <h2>GUBERNATURA</h2>
-      <div className="encabezado">
-        <div className="elemento-encabezado">
-          <span>ENTIDAD FEDERATIVA</span>
-        </div>
-        <div className="elemento-encabezado">
-          <span>DISTRITO ELECTORAL</span>
-        </div>
-        <div className="elemento-encabezado">
-          <span>MUNICIPIO</span>
-        </div>
+    <div className="votaciones-container">
+      <div className="grafica">
+        <BarChart data={chartData} options={{ responsive: true }} />
       </div>
-      <p>Marque el recuadro de su preferencia</p>
-      <div className="partidos">
-        <div className="partido">
-          <div className="logo-partido pan"></div>
-          <span className="nombre-partido">PARTIDO ACCIÓN NACIONAL</span>
-          <span className="nombre-candidato">Xóchitl Gálvez</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
-        <div className="partido">
-          <div className="logo-partido pri"></div>
-          <span className="nombre-partido">PARTIDO REVOLUCIONARIO INSTITUCIONAL</span>
-          <span className="nombre-candidato">Xóchitl Gálvez</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
-        <div className="partido">
-          <div className="logo-partido prd"></div>
-          <span className="nombre-partido">PARTIDO DE LA REVOLUCIÓN DEMOCRÁTICA</span>
-          <span className="nombre-candidato">Xóchitl Gálvez</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
-        <div className="partido">
-          <div className="logo-partido pt"></div>
-          <span className="nombre-partido">PARTIDO DEL TRABAJO</span>
-          <span className="nombre-candidato">Claudia Sheinbaum</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
-        <div className="partido">
-          <div className="logo-partido verde"></div>
-          <span className="nombre-partido">PARTIDO VERDE ECOLOGISTA DE MÉXICO</span>
-          <span className="nombre-candidato">Claudia Sheinbaum</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
-        <div className="partido">
-          <div className="logo-partido udc"></div>
-          <span className="nombre-partido">Movimiento Ciudadano</span>
-          <span className="nombre-candidato">Jorge Álvarez Máynez</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
-        <div className="partido">
-          <div className="logo-partido morena"></div>
-          <span className="nombre-partido">MORENA</span>
-          <span className="nombre-candidato">Claudia Sheinbaum</span>
-          <input type="checkbox" className="checkbox" />
-        </div>
+      <div className="boleta-container">
+        <form action="" className='boleta' onSubmit={handleVote}>
+          <h1>PROCESO ELECTORAL LOCAL 2023</h1>
+          <h2>GUBERNATURA</h2>
+          <div className="encabezado">
+            <div className="elemento-encabezado">
+              <span>ENTIDAD FEDERATIVA</span>
+              <span>{userState}</span>
+            </div>
+            <div className="elemento-encabezado">
+              <span>DISTRITO ELECTORAL</span>
+            </div>
+            <div className="elemento-encabezado">
+              <span>MUNICIPIO</span>
+              <span>{userCity}</span> 
+            </div>
+          </div>
+          <p>Marque el recuadro de su preferencia</p>
+          <div className="partidos">
+            {candidates.map(candidate => (
+              <div key={candidate._id} className="partido">
+                <div className="logo-partido">
+                  <img src={candidate.image_url} alt={candidate.name_political_party} className="logo" />
+                </div>
+                <span className="nombre-partido">{candidate.name_political_party}</span>
+                <span className="nombre-candidato">{candidate.name_candidate}</span>
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={selectedParty === candidate.name_political_party}
+                  onChange={() => handleCheckboxChange(candidate.name_political_party)}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="button-container">
+            <button type="submit" disabled={!selectedParty}>Votar</button>
+          </div>
+        </form>
       </div>
     </div>
   );

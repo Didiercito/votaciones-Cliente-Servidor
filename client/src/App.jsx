@@ -1,18 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Inicio from './components/InicioDeSesión/InicioDeSesion';
+import Registro from './components/Registro/registro';
 import Votaciones from './components/HojaVotar/Votaciones';
-import Grafica from './components/Grafica/Grafica';
-import './components/HojaVotar/Votaciones.css';
+
 
 function App() {
   return (
-    <div className="container">
-      <div className="chart-container">
-        <Grafica />
-      </div>
-      <div className="boleta-container">
-        <Votaciones />
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/registro" element={<Registro />} /> 
+        <Route path="/votaciones" element={<Votaciones />} /> 
+      </Routes>
+    </Router>
   );
 }
 

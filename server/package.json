@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "tsc": "tsc",
+    "insert":"ts-node src/seed/partyPoliticSeeder.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

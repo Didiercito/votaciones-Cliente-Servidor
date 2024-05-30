@@ -4,7 +4,6 @@ import { CandidateRepository } from "../../domain/interface/candidateRepository"
 import { URI, dbName } from "../../../database/db";
 
 export class CandidateMongoDBRepository implements CandidateRepository {
-
     async createCandidate(credentials: CandidateCredentials): Promise<CandidateCredentials | null> {
         const client = new MongoClient(URI);
 
@@ -15,11 +14,14 @@ export class CandidateMongoDBRepository implements CandidateRepository {
 
             const result = await candidateCollection.insertOne({
                 image_url: credentials.image_url,
-                name_candidate: credentials.name_candidate
+                name_candidate: credentials.name_candidate,
+                name_political_party: credentials.name_political_party,
+                id_political_party: credentials.id_political_party,
+                candidate_id: credentials.candidate_id
             });
 
             if (result.insertedId) {
-                credentials._id = result.insertedId.toString();
+                credentials._id = result.insertedId.toString(); 
                 return credentials;
             }
 
@@ -43,8 +45,17 @@ export class CandidateMongoDBRepository implements CandidateRepository {
 
             const result = await candidateCollection.updateOne(
                 { _id: new ObjectId(_id) },
-                { $set: credentials }
+                {
+                    $set: {
+                        image_url: credentials.image_url,
+                        name_candidate: credentials.name_candidate,
+                        name_political_party: credentials.name_political_party,
+                        id_political_party: credentials.id_political_party,
+                        candidate_id: credentials.candidate_id
+                    }
+                }
             );
+
             return result.modifiedCount > 0 ? credentials : null;
         } catch (error) {
             console.error("Error al actualizar el candidato: ", error);
@@ -72,7 +83,10 @@ export class CandidateMongoDBRepository implements CandidateRepository {
                 return {
                     _id: candidate._id.toString(),
                     image_url: candidate.image_url,
-                    name_candidate: candidate.name_candidate
+                    name_candidate: candidate.name_candidate,
+                    name_political_party: candidate.name_political_party,
+                    id_political_party: candidate.id_political_party,
+                    candidate_id: candidate.candidate_id
                 };
             }
             return null;
@@ -96,7 +110,10 @@ export class CandidateMongoDBRepository implements CandidateRepository {
             return candidates.map(candidate => ({
                 _id: candidate._id.toString(),
                 image_url: candidate.image_url,
-                name_candidate: candidate.name_candidate
+                name_candidate: candidate.name_candidate,
+                name_political_party: candidate.name_political_party,
+                id_political_party: candidate.id_political_party,
+                candidate_id: candidate.candidate_id
             }));
 
         } catch (error) {

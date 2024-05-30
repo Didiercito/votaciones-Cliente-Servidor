@@ -1,43 +1,32 @@
 import express from 'express';
+import http from 'http';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import WebSocket, { WebSocketServer } from 'ws';
-
-import { authRouter } from '../src/auth/infraestructure/routes/authRoutes';
+import { seedingCandidates } from './seed/partyPoliticSeeder';
+import { authRouter } from './auth/infraestructure/routes/authRoutes';
 import { candidateRouter } from './candidate/infraestructure/routes/candidateRoutes';
+import { voteRouter } from './vote/infraestructure/routes/voteRoutes';
+import { wss } from './ws/ws';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "*"
+}));
+seedingCandidates().catch(console.error);
 
-const PORT = process.env.PORT; 
-const wss = new WebSocketServer({ noServer: true });
+const PORT = process.env.PORT || 3000;
 
-wss.on('connection', (ws: WebSocket) => { 
-    console.log('Cliente conectado al WebSocket');
-
-    const sendInterval = setInterval(() => {
-        const data = JSON.stringify({ value: Math.random() });
-        ws.send(data);
-    }, 1000);
-
-    ws.on('close', () => {
-        console.log('Cliente desconectado del WebSocket');
-        clearInterval(sendInterval); 
-    });
-
-    ws.on('error', (error) => {
-        console.error('Error en WebSocket:', error);
-    });
-});
+const server = http.createServer(app);
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/candidate', candidateRouter);
+app.use('/api/v1/vote', voteRouter);
 
-const server = app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto: wss://localhost: ${PORT}`);
+server.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto: ${PORT}`);
 });
 
 server.on('upgrade', (request, socket, head) => {
