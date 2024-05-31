@@ -8,6 +8,7 @@ function Votaciones() {
   const [candidates, setCandidates] = useState([]);
   const [selectedParty, setSelectedParty] = useState(null);
   const location = useLocation();
+  const userId = location.state?.userId || localStorage.getItem('userId');
   const userState = location.state?.userState || localStorage.getItem('userState');  
   const userCity = location.state?.userCity || localStorage.getItem('userCity');    
   const [ws, setWs] = useState(null);
@@ -39,8 +40,8 @@ function Votaciones() {
   };
 
   const updateChartData = (candidates) => {
-    const labels = candidates.map(candidate => candidate.name_political_party);
-    const votes = candidates.map(candidate => candidate.votes || 0);
+    const labels = candidates.map(candidate => candidate.name_candidate);
+    const votes = candidates.map(candidate => candidate.votes);
     const backgroundColor = candidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 0.2)`);
     const borderColor = candidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 1)`);
 
@@ -58,7 +59,7 @@ function Votaciones() {
 
   useEffect(() => {
     obtenerCandidatos(); 
-    const intervalId = setInterval(obtenerCandidatos, 35000); 
+    const intervalId = setInterval(obtenerCandidatos, 5000); 
     return () => clearInterval(intervalId); 
   }, []);
 
@@ -88,8 +89,8 @@ function Votaciones() {
     return () => socket.close();
   }, []);
 
-  const handleCheckboxChange = (party) => {
-    setSelectedParty(party);
+  const handleCheckboxChange = (candidate) => {
+    setSelectedParty(candidate.candidate_id); 
   };
 
   const handleVote = (event) => {
@@ -97,7 +98,7 @@ function Votaciones() {
     if (selectedParty) {
       ConfirmAlert({
         title: 'Confirmar su voto',
-        message: `Estas seguro que quieres votar por este partido politico ${selectedParty}?`,
+        message: `Estas seguro que quieres votar por este partido politico?`,
         onConfirm: () => {
           thankYouAlert();
         },
@@ -111,11 +112,10 @@ function Votaciones() {
     alert('Thank you for your vote!');
 
     const voteData = {
-      userId: 'user123',
       candidateId: selectedParty
     };
 
-    fetch('http://localhost:8080/api/v1/vote', {
+    fetch(`http://localhost:8080/api/v1/vote/vote/${userId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -126,6 +126,7 @@ function Votaciones() {
     .then(data => {
       if (data.success) {
         console.log('Voto registrado exitosamente');
+        obtenerCandidatos(); 
       } else {
         console.error('Error al registrar el voto');
       }
@@ -169,8 +170,8 @@ function Votaciones() {
                 <input
                   type="checkbox"
                   className="checkbox"
-                  checked={selectedParty === candidate.name_political_party}
-                  onChange={() => handleCheckboxChange(candidate.name_political_party)}
+                  checked={selectedParty === candidate.candidate_id}
+                  onChange={() => handleCheckboxChange(candidate)}
                 />
               </div>
             ))}

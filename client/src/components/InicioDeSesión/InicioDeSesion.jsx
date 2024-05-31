@@ -33,9 +33,17 @@ function Inicio() {
   
         if (response.ok) {
           localStorage.setItem("authToken", data.token);
-          localStorage.setItem("userState", data.state);
-          localStorage.setItem("userCity", data.city);
-          navigate("/votaciones", { state: { userState: data.state, userCity: data.city } });
+          localStorage.setItem("userId", data.user._id); 
+          localStorage.setItem("userState", data.user.state); 
+          localStorage.setItem("userCity", data.user.city); 
+          
+          navigate("/votaciones", { 
+            state: { 
+              userId: data.user._id,
+              userState: data.user.state, 
+              userCity: data.user.city 
+            }
+          });
         } else {
           console.error("Error al iniciar sesión:", data.message);
         }

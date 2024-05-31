@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(cors({
     origin: "*"
 }));
+
 seedingCandidates().catch(console.error);
 
 const PORT = process.env.PORT || 3000;

@@ -1,36 +1,29 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { NextFunction, Request,Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 dotenv.config();
 
-const secretKey:any = process.env.SECRET_JWT;
+const secretKey: any = process.env.SECRET_JWT;
 
-export const authenticaMiddleware = (
-    req:Request,
-    res:Response,
-    next:NextFunction
-) => {
-
-    const token = req.header('Authorization');
+export const authenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const token = req.header('Authorization')?.split(' ')[1]; // Asumiendo que el token viene con el formato "Bearer <token>"
 
     if (!token) {
         return res.status(401).json({
-            error:'unauthorized'
-        })
+            error: 'Unauthorized'
+        });
     }
 
     try {
-        const decode = jwt.verify(token,secretKey);
+        const decoded = jwt.verify(token, secretKey);
 
-        (req as any).token = decode;
+        (req as any).userId = (decoded as any)._id;
 
         next();
-
-    }catch(error) {
+    } catch (error) {
         return res.status(401).json({
-            error:'unauthorized'
-        })
+            error: 'Unauthorized'
+        });
     }
-
 }

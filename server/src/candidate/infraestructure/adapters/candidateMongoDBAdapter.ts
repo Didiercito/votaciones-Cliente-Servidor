@@ -17,7 +17,8 @@ export class CandidateMongoDBRepository implements CandidateRepository {
                 name_candidate: credentials.name_candidate,
                 name_political_party: credentials.name_political_party,
                 id_political_party: credentials.id_political_party,
-                candidate_id: credentials.candidate_id
+                candidate_id: credentials.candidate_id,
+                votes: credentials.votes
             });
 
             if (result.insertedId) {
@@ -51,7 +52,8 @@ export class CandidateMongoDBRepository implements CandidateRepository {
                         name_candidate: credentials.name_candidate,
                         name_political_party: credentials.name_political_party,
                         id_political_party: credentials.id_political_party,
-                        candidate_id: credentials.candidate_id
+                        candidate_id: credentials.candidate_id,
+                        votes: credentials.votes
                     }
                 }
             );
@@ -86,7 +88,8 @@ export class CandidateMongoDBRepository implements CandidateRepository {
                     name_candidate: candidate.name_candidate,
                     name_political_party: candidate.name_political_party,
                     id_political_party: candidate.id_political_party,
-                    candidate_id: candidate.candidate_id
+                    candidate_id: candidate.candidate_id,
+                    votes: candidate.votes
                 };
             }
             return null;
@@ -113,7 +116,8 @@ export class CandidateMongoDBRepository implements CandidateRepository {
                 name_candidate: candidate.name_candidate,
                 name_political_party: candidate.name_political_party,
                 id_political_party: candidate.id_political_party,
-                candidate_id: candidate.candidate_id
+                candidate_id: candidate.candidate_id,
+                votes: candidate.votes
             }));
 
         } catch (error) {

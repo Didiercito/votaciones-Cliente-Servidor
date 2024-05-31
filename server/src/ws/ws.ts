@@ -1,6 +1,6 @@
 import { WebSocketServer } from 'ws';
 
-export const wss = new WebSocketServer({ noServer: true });
+export const wss = new WebSocketServer({ port:4000 });
 
 wss.on('connection', (ws) => {
     console.log('Cliente conectado al WebSocket');

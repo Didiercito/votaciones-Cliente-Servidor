@@ -7,9 +7,9 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const BarChart = ({ data, options }) => {
   return (
-    <div>
-      <h1>Gráfica de Barras</h1>
-      <Bar data={data} options={options} />
+    <div className="chart-container">
+      <h1 className="chart-title">Gráfica de Barras</h1>
+      <Bar data={data} options={options} className="chart" />
     </div>
   );
 };

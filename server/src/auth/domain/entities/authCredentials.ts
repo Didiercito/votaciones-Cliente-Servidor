@@ -28,10 +28,8 @@ export class AuthCredentialRegister {
     @IsNotEmpty()
     public zip_code: number;
 
-    @IsNotEmpty()
-    public id_vote: number
 
-    constructor(CURP: string, password: string, name: string, lastname: string, email: string, state: string, city: string, zip_code: number, id_vote: number) {
+    constructor(CURP: string, password: string, name: string, lastname: string, email: string, state: string, city: string, zip_code: number) {
             this.CURP = CURP,
             this.password = password,
             this.name = name,
@@ -39,8 +37,7 @@ export class AuthCredentialRegister {
             this.email = email,
             this.state = state,
             this.city = city,
-            this.zip_code = zip_code,
-            this.id_vote = 0
+            this.zip_code = zip_code
     }
 }
 

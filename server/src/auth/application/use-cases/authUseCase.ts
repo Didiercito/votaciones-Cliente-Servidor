@@ -44,12 +44,11 @@ export class AuthCaseUseLogin {
 }
 
 
-
 export class AuthUseCaseRegister{
     constructor(readonly authRepository:AuthRepository){}
     
     
-    async execute(CURP:string, password:string, name:string, lastname:string, email:string, state:string, city:string, zip_code:number, id_vote:number){
+    async execute(CURP:string, password:string, name:string, lastname:string, email:string, state:string, city:string, zip_code:number){
         const credentials = new AuthCredentialRegister(
             CURP,
             password,
@@ -58,8 +57,7 @@ export class AuthUseCaseRegister{
             email,
             state,
             city,
-            zip_code,
-            id_vote
+            zip_code
         );
 
         const authValidate = new AuthValidator(credentials);

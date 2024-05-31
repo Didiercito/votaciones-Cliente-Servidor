@@ -8,27 +8,33 @@ export class AuthMongoDBAdapterRepository implements AuthRepository {
     
     async verifyUser(credentials: AuthCredentialLogin): Promise<AuthCredentialLogin | null> {
         const client = new MongoClient(URI);
-
+    
         try {
             await client.connect();
             const db = client.db(dbName);
             const userCollections = db.collection('Users');
-
+    
             const user = await userCollections.findOne({
                 CURP: credentials.CURP,
             });
-
+    
             if (!user) {
-                return null; 
+                return null;
             }
-
+    
             const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-
+    
             if (!isPasswordValid) {
                 return null;
             }
-
-            return new AuthCredentialLogin(user.CURP, user.password);
+    
+            return {
+                CURP: user.CURP,
+                password: user.password,
+                _id: user._id,
+                state: user.state,
+                city: user.city,
+            } as AuthCredentialLogin;
         } catch (error) {
             console.error('Error verifying user', error);
             return null;
@@ -36,6 +42,7 @@ export class AuthMongoDBAdapterRepository implements AuthRepository {
             await client.close();
         }
     }
+    
 
     async registerUser(credentials: AuthCredentialRegister): Promise<AuthCredentialRegister | null> {
         const client = new MongoClient(URI);
