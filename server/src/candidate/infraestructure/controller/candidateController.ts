@@ -12,8 +12,8 @@ export class CandidateController {
 
     async create(req: Request, res: Response) {
         try {
-            const { image_url, name_candidate, name_political_party, id_political_party, candidate_id, votes=0} = req.body;
-            const createdCandidate = await this.createCandidateUseCase.execute(image_url, name_candidate, name_political_party, id_political_party, candidate_id,votes);
+            const { image_url, name_candidate, name_political_party, id_political_party, candidate_id, votes = 0 } = req.body;
+            const createdCandidate = await this.createCandidateUseCase.execute(image_url, name_candidate, name_political_party, id_political_party, candidate_id, votes);
 
             if (!createdCandidate) {
                 return res.status(500).json({ message: 'Failed to create candidate', success: false });
@@ -37,7 +37,7 @@ export class CandidateController {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const { image_url, name_candidate, name_political_party, id_political_party, candidate_id, votes} = req.body;
+            const { image_url, name_candidate, name_political_party, id_political_party, candidate_id, votes } = req.body;
             const credentials = new CandidateCredentials(image_url, name_candidate, name_political_party, id_political_party, candidate_id, votes);
             const updatedCandidate = await this.updateCandidateUseCase.execute(id, credentials);
 

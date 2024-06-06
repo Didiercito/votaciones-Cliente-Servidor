@@ -7,6 +7,7 @@ import './Votaciones.css';
 function Votaciones() {
   const [candidates, setCandidates] = useState([]);
   const [selectedParty, setSelectedParty] = useState(null);
+  const [totalVotes, setTotalVotes] = useState(0);
   const location = useLocation();
   const userId = location.state?.userId || localStorage.getItem('userId');
   const userState = location.state?.userState || localStorage.getItem('userState');  
@@ -82,11 +83,29 @@ function Votaciones() {
       console.log('WebSocket closed');
     };
 
-    socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-
     return () => socket.close();
+  }, []);
+
+  const fetchTotalVotes = () => {
+    fetch('http://localhost:8080/api/v1/vote/total-votes')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setTotalVotes(data.totalVotes);
+          fetchTotalVotes(); 
+        } else {
+          console.error('Failed to retrieve total votes');
+          setTimeout(fetchTotalVotes, 5000); 
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching total votes:', error);
+        setTimeout(fetchTotalVotes, 5000); 
+      });
+  };
+
+  useEffect(() => {
+    fetchTotalVotes(); 
   }, []);
 
   const handleCheckboxChange = (candidate) => {
@@ -140,6 +159,9 @@ function Votaciones() {
     <div className="votaciones-container">
       <div className="grafica">
         <BarChart data={chartData} options={{ responsive: true }} />
+        <div className="total-votes">
+          <h2>Total de Votos: {totalVotes}</h2>
+        </div>
       </div>
       <div className="boleta-container">
         <form action="" className='boleta' onSubmit={handleVote}>

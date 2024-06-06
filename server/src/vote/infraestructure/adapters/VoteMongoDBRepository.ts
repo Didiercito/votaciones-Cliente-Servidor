@@ -1,4 +1,5 @@
-import { MongoClient, ObjectId } from 'mongodb';
+// src/infrastructure/adapters/VoteMongoDBRepository.ts
+import { MongoClient } from 'mongodb';
 import { URI, dbName } from '../../../database/db';
 import { VoteRepository } from '../../domain/interface/voteRepository';
 
@@ -59,6 +60,24 @@ export class VoteMongoDBRepository implements VoteRepository {
         } catch (error) {
             console.error('Error al obtener los votos por candidato:', error);
             return new Map<string, number>();
+        } finally {
+            await client.close();
+        }
+    }
+
+    async getTotalVotes(): Promise<number> {
+        const client = new MongoClient(URI);
+
+        try {
+            await client.connect();
+            const db = client.db(dbName);
+            const voteCollection = db.collection('Votes');
+
+            const totalVotes = await voteCollection.countDocuments();
+            return totalVotes;
+        } catch (error) {
+            console.error('Error al obtener el total de votos:', error);
+            return 0;
         } finally {
             await client.close();
         }

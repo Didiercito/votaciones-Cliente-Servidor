@@ -7,8 +7,12 @@ export class VoteCredentials {
     @IsNotEmpty()
     public candidateId: string;
 
-    constructor(userId: string, candidateId: string) {
+    @IsNotEmpty()
+    public totalVotes: number
+    
+    constructor(userId: string, candidateId: string, totalVotes: number) {
         this.userId = userId;
         this.candidateId = candidateId;
+        this.totalVotes = totalVotes;
     }
 }

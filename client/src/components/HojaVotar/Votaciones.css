@@ -10,20 +10,25 @@ body {
 
 .votaciones-container {
   display: flex;
-  justify-content: space-between; /* Alinear elementos en el espacio disponible */
-  align-items: center; /* Centrar verticalmente */
+  justify-content: space-between;
+  align-items: center;
 }
 
 .grafica {
-  flex: 1; /* Hace que la gráfica ocupe todo el espacio disponible */
+  flex: 1;
   padding: 20px;
-  text-align: center; /* Centra horizontalmente */
+  text-align: center;
+}
+
+.total-votes {
+  margin-top: 20px;
+  text-align: center;
 }
 
 .boleta-container {
-  flex: 1; /* Hace que la hoja de votaciones ocupe todo el espacio disponible */
+  flex: 1;
   padding: 20px;
-  text-align: center; /* Centra horizontalmente */
+  text-align: center;
 }
 
 .boleta {
@@ -32,13 +37,13 @@ body {
   border: 1px solid #ccc;
   width: 800px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  margin: 0 auto; /* Centra horizontalmente */
+  margin: 0 auto;
 }
 
 h1, h2 {
   text-align: center;
   margin: 5px 0;
-  letter-spacing: 1px; /* Añade un poco de espacio entre las letras */
+  letter-spacing: 1px;
 }
 
 .encabezado {
@@ -54,7 +59,7 @@ h1, h2 {
 
 .elemento-encabezado span {
   margin: 2px 0;
-  letter-spacing: 0.5px; /* Añade un poco de espacio entre las letras */
+  letter-spacing: 0.5px;
 }
 
 .partidos {
@@ -92,12 +97,12 @@ h1, h2 {
 
 .nombre-partido {
   font-weight: bold;
-  letter-spacing: 0.5px; /* Añade un poco de espacio entre las letras */
+  letter-spacing: 0.5px;
 }
 
 .nombre-candidato {
   margin-left: auto;
-  letter-spacing: 0.5px; /* Añade un poco de espacio entre las letras */
+  letter-spacing: 0.5px;
 }
 
 .checkbox {

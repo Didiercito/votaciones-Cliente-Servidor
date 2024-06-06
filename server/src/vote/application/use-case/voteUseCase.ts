@@ -1,3 +1,4 @@
+// src/application/use-case/voteUseCase.ts
 import { VoteRepository } from "../../domain/interface/voteRepository";
 import { VoteCredentials } from "../../domain/entities/voteCredentials";
 
@@ -23,6 +24,19 @@ export class GetVotesUseCase {
         } catch (error) {
             console.error('Error al obtener los votos:', error);
             return new Map<string, number>();
+        }
+    }
+}
+
+export class GetTotalVotesUseCase {
+    constructor(private voteRepository: VoteRepository) {}
+
+    async getTotalVotes(): Promise<number> {
+        try {
+            return await this.voteRepository.getTotalVotes();
+        } catch (error) {
+            console.error('Error al obtener el total de votos:', error);
+            return 0;
         }
     }
 }
