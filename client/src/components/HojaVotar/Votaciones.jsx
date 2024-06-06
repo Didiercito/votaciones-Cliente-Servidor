@@ -41,10 +41,14 @@ function Votaciones() {
   };
 
   const updateChartData = (candidates) => {
-    const labels = candidates.map(candidate => candidate.name_candidate);
-    const votes = candidates.map(candidate => candidate.votes);
-    const backgroundColor = candidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 0.2)`);
-    const borderColor = candidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 1)`);
+    const uniqueCandidates = candidates.filter((candidate, index, self) => 
+      index === self.findIndex(c => c.name_candidate === candidate.name_candidate)
+    );
+
+    const labels = uniqueCandidates.map(candidate => candidate.name_candidate);
+    const votes = uniqueCandidates.map(candidate => candidate.votes);
+    const backgroundColor = uniqueCandidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 0.2)`);
+    const borderColor = uniqueCandidates.map((_, index) => `rgba(${index * 50}, ${index * 50}, ${index * 50}, 1)`);
 
     setChartData({
       labels,
@@ -92,20 +96,19 @@ function Votaciones() {
       .then(data => {
         if (data.success) {
           setTotalVotes(data.totalVotes);
-          fetchTotalVotes(); 
         } else {
           console.error('Failed to retrieve total votes');
-          setTimeout(fetchTotalVotes, 5000); 
         }
       })
       .catch(error => {
         console.error('Error fetching total votes:', error);
-        setTimeout(fetchTotalVotes, 5000); 
       });
   };
 
   useEffect(() => {
-    fetchTotalVotes(); 
+    fetchTotalVotes();
+    const intervalId = setInterval(fetchTotalVotes, 5000); 
+    return () => clearInterval(intervalId); 
   }, []);
 
   const handleCheckboxChange = (candidate) => {
@@ -146,6 +149,7 @@ function Votaciones() {
       if (data.success) {
         console.log('Voto registrado exitosamente');
         obtenerCandidatos(); 
+        fetchTotalVotes(); // Fetch total votes after voting
       } else {
         console.error('Error al registrar el voto');
       }

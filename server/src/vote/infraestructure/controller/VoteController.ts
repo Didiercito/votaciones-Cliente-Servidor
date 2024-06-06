@@ -1,11 +1,7 @@
-// src/interfaces/controllers/VoteController.ts
 import { Request, Response } from "express";
 import { VoteUseCase, GetVotesUseCase, GetTotalVotesUseCase } from "../../application/use-case/voteUseCase";
 import { WebSocketServer } from "ws";
 import { VoteCredentials } from "../../domain/entities/voteCredentials";
-
-let currentTotalVotes: number = 0;
-const pendingRequests: Array<Response> = [];
 
 export class VoteController {
     constructor(
@@ -29,22 +25,13 @@ export class VoteController {
                     client.send(payload);
                 });
 
-                // Notificar a todas las solicitudes pendientes de long polling
-                currentTotalVotes += 1;  // Incrementa el contador total de votos
-                while (pendingRequests.length > 0) {
-                    const pendingRes = pendingRequests.pop();
-                    if (pendingRes) {
-                        pendingRes.status(200).json({
-                            message: "Total de votos obtenido correctamente",
-                            success: true,
-                            totalVotes: currentTotalVotes
-                        });
-                    }
-                }
+                // Fetch total votes after a successful vote
+                const totalVotes = await this.getTotalVotesUseCase.getTotalVotes();
 
                 return res.status(200).json({
                     message: "Voto registrado exitosamente",
-                    success: true
+                    success: true,
+                    totalVotes
                 });
             } else {
                 return res.status(500).json({
@@ -82,9 +69,11 @@ export class VoteController {
     async getTotalVotes(req: Request, res: Response) {
         try {
             const totalVotes = await this.getTotalVotesUseCase.getTotalVotes();
-            currentTotalVotes = totalVotes;
-
-            pendingRequests.push(res);
+            res.status(200).json({
+                message: "Total de votos obtenido correctamente",
+                success: true,
+                totalVotes
+            });
         } catch (error) {
             console.error('Error al obtener el total de votos:', error);
             return res.status(500).json({
